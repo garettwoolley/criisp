@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DECK — deck.fm</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f8f5f0;
+      --grid-line: #ede7dc;
+      --card-bg: #ffffff;
+      --border: #111215;
+      --ink: #111215;
+      --ink-muted: #5a5d66;
+      --orange: #ff4800;
+      --font-sans: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'Space Mono', monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg);
+      background-image: 
+        linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+      background-size: 32px 32px;
+      color: var(--ink);
+      font-family: var(--font-sans);
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    header {
+      padding: 24px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid var(--border);
+      background: rgba(248, 245, 240, 0.85);
+      backdrop-filter: blur(4px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--ink);
+    }
+
+    .brand-glyph {
+      width: 18px;
+      height: 18px;
+      background: var(--orange);
+      color: #fff;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: 11px;
+      display: grid;
+      place-items: center;
+    }
+
+    .brand-name {
+      font-size: 19px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+    }
+
+    .brand-domain {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--ink-muted);
+      border-left: 1px solid var(--border);
+      padding-left: 10px;
+      margin-left: 2px;
+    }
+
+    main {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 72px 32px;
+      width: 100%;
+    }
+
+    h1 {
+      font-size: clamp(40px, 6.2vw, 76px);
+      font-weight: 700;
+      line-height: 0.98;
+      letter-spacing: -0.04em;
+      text-transform: uppercase;
+      margin-bottom: 28px;
+    }
+
+    /* DYNAMIC HOVER STRIKE FOR ZERO */
+    .zero-strike {
+      position: relative;
+      display: inline-block;
+      cursor: pointer;
+    }
+
+    .zero-strike::after {
+      content: "";
+      position: absolute;
+      left: -4%;
+      top: 52%;
+      width: 108%;
+      height: 5px;
+      background: var(--orange);
+      transform: translateY(-50%) rotate(-6deg) scaleX(0);
+      transform-origin: left center;
+      box-shadow: 2px 2px 0 var(--border);
+      transition: transform 0.18s cubic-bezier(0.2, 0.9, 0.3, 1.2);
+      pointer-events: none;
+    }
+
+    .zero-strike:hover::after {
+      transform: translateY(-50%) rotate(-6deg) scaleX(1);
+    }
+
+    .subtext {
+      font-size: clamp(17px, 2.1vw, 21px);
+      line-height: 1.5;
+      color: var(--ink-muted);
+      max-width: 740px;
+      margin-bottom: 48px;
+    }
+
+    /* DYNAMIC DECK BADGE */
+    .deck-badge {
+      display: inline-block;
+      position: relative;
+      font-family: var(--font-mono);
+      font-size: 0.82em;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      color: var(--ink);
+      background: var(--card-bg);
+      border: 2px solid var(--border);
+      padding: 2px 9px 1px;
+      margin: 0 4px;
+      vertical-align: baseline;
+      cursor: pointer;
+      user-select: none;
+      box-shadow: 2.5px 2.5px 0 var(--border);
+      transition: transform 0.12s ease, box-shadow 0.12s ease;
+    }
+
+    .deck-badge:hover {
+      transform: translate(-1.5px, -1.5px);
+      box-shadow: 3.5px 3.5px 0 var(--orange);
+      border-color: var(--border);
+    }
+
+    .cta-box {
+      background: var(--card-bg);
+      border: 2px solid var(--border);
+      box-shadow: 6px 6px 0 var(--border);
+      padding: 24px;
+      max-width: 580px;
+    }
+
+    .role-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .role-btn {
+      flex: 1;
+      padding: 10px 14px;
+      background: transparent;
+      border: 2px solid var(--border);
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      color: var(--ink);
+      transition: all 0.1s ease;
+    }
+
+    .role-btn.active {
+      background: var(--ink);
+      color: #fff;
+    }
+
+    .form-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    input[type="email"] {
+      flex: 1;
+      border: 2px solid var(--border);
+      padding: 14px;
+      font-family: var(--font-sans);
+      font-size: 15px;
+      background: var(--bg);
+      color: var(--ink);
+      outline: none;
+    }
+
+    input[type="email"]:focus {
+      background: #fff;
+    }
+
+    button[type="submit"] {
+      background: var(--orange);
+      color: #fff;
+      border: 2px solid var(--border);
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 0 24px;
+      cursor: pointer;
+      box-shadow: 3px 3px 0 var(--border);
+      transition: transform 0.1s ease;
+    }
+
+    button[type="submit"]:hover {
+      transform: translate(-1px, -1px);
+      box-shadow: 4px 4px 0 var(--border);
+    }
+
+    footer {
+      padding: 20px 32px;
+      border-top: 2px solid var(--border);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--ink-muted);
+      display: flex;
+      justify-content: space-between;
+      background: rgba(248, 245, 240, 0.85);
+      backdrop-filter: blur(4px);
+    }
+
+    @media (max-width: 600px) {
+      .form-row { flex-direction: column; }
+      button[type="submit"] { padding: 14px; }
+      main { padding: 48px 24px; }
+      header, footer { padding: 18px 24px; }
+      .zero-strike::after { height: 4px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="#" class="brand">
+      <div class="brand-glyph">D</div>
+      <span class="brand-name">DECK</span>
+      <span class="brand-domain">deck.fm</span>
+    </a>
+  </header>
+
+  <main>
+    <h1>
+      SOUND INTEGRITY.<br />
+      <span class="zero-strike">ZERO</span> FRICTION.
+    </h1>
+    
+    <p class="subtext">
+      Consumer players let you listen. <span class="deck-badge">DECK</span> gives you instantaneous sample-locked A/B toggling, LUFS auto-matching, and pinned revision logs, so mixers and artists approve changes in minutes, not days.
+    </p>
+
+    <div class="cta-box">
+      <div class="role-row">
+        <button type="button" class="role-btn active" onclick="setRole(this)">ARTIST</button>
+        <button type="button" class="role-btn" onclick="setRole(this)">PRODUCER</button>
+      </div>
+
+      <form class="form-row" onsubmit="handleSubmit(event)">
+        <input type="email" placeholder="Enter studio email..." required />
+        <button type="submit">REQUEST ACCESS</button>
+      </form>
+    </div>
+  </main>
+
+  <footer>
+    <span>DECK AUDIO PROTOCOL</span>
+    <span>RELEASE 1.0</span>
+  </footer>
+
+  <script>
+    function setRole(btn) {
+      document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+
+    function handleSubmit(e) {
+      e.preventDefault();
+      const btn = e.target.querySelector('button');
+      btn.innerText = "ACCESS QUEUED";
+      btn.style.background = "var(--ink)";
+      e.target.querySelector('input').disabled = true;
+    }
+  </script>
+
+</body>
+</html>
